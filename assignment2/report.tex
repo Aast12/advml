@@ -8,7 +8,7 @@
 
 \author{Andres Alam Sanchez Torres}
 
-\newcommand{\assignmentno}{1}
+\newcommand{\assignmentno}{2}
 
 % Define the custom counters
 \newcounter{assignment}
@@ -31,36 +31,75 @@
     \vspace{1em}\\}
 
 \begin{document}
-\noindent Advanced Machine Learning\hfill Assignment 1\\
+\noindent Advanced Machine Learning\hfill Assignment \assignmentno\\
 Andres Alam Sanchez Torres \hfill \today
 
 \noindent\hrulefill
 
-\assignmentpart{Dependencies in a Directed Graphical Model}
-
-\begin{center}
-  \includegraphics[width=0.8\textwidth]{./figures/dgm1.png}
-\end{center}
+\assignmentpart{Exponential Family}
 
 \begin{task}
-  In the graphical model of Figure 1, is \( w_{n, g} \perp w_{n, g + 1} | s_n \)? 
+  task
 \end{task}
 
-No, there is a non-blocking path $w_{n, g} \leftarrow z_n \rightarrow w_{n, g + 1}$. Since \( s_n \) is not a descendant of \( z_n \), the nodes are not d-separated by \( s_n \), and thus, not conditionally independent.
+\begin{align*}
+  p(x | p) &= 1 \cdot \exp ((\log ( \frac{p}{1 - p}  )) \cdot x - \log ( 1 + \exp( \log (\frac{p}{ 1 - p}) ) )) \\
+  &= \exp(x \log p - x \log (1 - p) - \log(1 + \exp( \log \frac{p}{1 - p}))) \\
+  &= \exp (x \log p - x \log(1 - p) - \log(1 + \frac{p}{1 - p})) \\
+  &= \exp (x \log p - x \log (1 - p) - \log (\frac{1}{1 - p})) \\
+  &= \exp (x \log p - x \log (1 - p) - \log 1 + \log(1 - p)) \\
+  &= \exp (log p^x \cdot \frac{1}{(1 - p)^x} \cdot (1 - p)) \\
+  &= p^x (1 - p)^{1 - x}
+\end{align*}
+
+\( \implies p(x | p) \sim Bernoulli(p) \)
+
 \begin{task}
-  In the graphical model of Figure 1, is \( l_n \perp w_{n, g} | x_{n, g} \)? 
+  Task
 \end{task}
-No, there is a path \( l_n  \rightarrow y_{n, g} \leftarrow w_{n, g}\) which is not a d-separation since \( x_{n, g} \) is a descendant of \( y_{n, g} \).
+
+\begin{align*}
+  p(x | \alpha, \beta) &= 1 \cdot \exp ( \begin{bmatrix} \alpha - 1 \\ -\beta \end{bmatrix} \cdot \begin{bmatrix}
+  \log x \\ x
+  \end{bmatrix} - ( \log \Gamma(\alpha) - \alpha \log (\beta) ) ) \\
+  &= \exp((\alpha - 1) \log x - \beta x - \log \Gamma (\alpha) + \alpha  \log(\beta)) \\
+  &= \exp(\log x^{\alpha - 1} - \beta x = \log \Gamma(\alpha) + \log \beta^\alpha) \\
+  &= \exp(\log \frac{x^{\alpha - 1}\beta^\alpha}{\Gamma(\alpha)} - \beta x) \\
+  &= (\frac{x^{\alpha - 1} \beta^\alpha}{\Gamma(\alpha)}) \exp(-\beta x)
+\end{align*}
+
+\(\implies p(x | \alpha, \beta) \sim Gamma(\alpha, \beta) \)
 
 \begin{task}
-  In the graphical model of Figure 1, is \( z_{n} \perp x_{n, g} | w_{n, g}, h_{n, g} \)? 
+  Task 3
 \end{task}
-Yes.
+
+\begin{align*}
+  p(x | \psi_1, \psi_2) &= \frac{1}{x \sqrt{2 \pi}} \exp (\begin{bmatrix}
+    \frac{\mu}{\sigma^2} \\ - \frac{1}{2 \sigma^2} 
+  \end{bmatrix} \begin{bmatrix}
+    \log x \\ \log x^2
+  \end{bmatrix} - (-\frac{\mu^2}{(\sigma^2)^2} \frac{- 2 \sigma^2}{4} - \frac{1}{2} \log(\frac{1}{\sigma^2}))) 
+  &= \frac{1}{x \sqrt{2 \pi}} \exp (\frac{\mu}{\sigma^2} \log x - \frac{1}{2 \sigma^2} (\log x)^2 + \frac{}{})
+\end{align*}
+
+\begin{task}
+  Task 4 
+\end{task}
 
 
-\begin{center}
-  \includegraphics[width=0.8\textwidth]{./figures/dgm2.png}
-\end{center}
+\begin{align*}
+  p(x | \psi_1, \psi_2) &= 1 \cdot \exp(\begin{bmatrix}
+    \psi_1 - 1 \\ \psi_2 - 1
+  \end{bmatrix} \begin{bmatrix}
+    \log x \\ \log(1 - x)
+  \end{bmatrix} - (\log \Gamma(\psi_1) + \log \Gamma(\psi_2) - \log \Gamma(\psi_1 + \psi_2)))  \\
+  &= \exp (\log x (\psi_1 - 1) + \log(1 - x) (\psi_2 - 1) - \log \Gamma(\psi_1) - \log \Gamma(psi_2) + \log \Gamma(\psi_1 + \psi_2)) \\
+  &= \exp (\log (x^{\psi_1 - 1} (1 - x)^{\psi_2 - 1} \frac{\Gamma(\psi_1 + \psi_2)}{\Gamma(\psi_1) \Gamma(\psi_2)})) \\ 
+  &= x^{\psi_1 - 1} (1 - x)^{\psi_2 - 1} \frac{\Gamma(\psi_1 + \psi_2)}{\Gamma(\psi_1) \Gamma(\psi_2)}
+\end{align*}
+
+\( \implies p(x | \psi_1, \psi_2) \sim Beta(\psi_1, \psi_2) \)
 
 \begin{task}
   In the graphical model of Figure 2, is \( z_{1}^{n}  \perp z^n_M | C_n, A^{1:K}_{1:I, 1:J} \)? 
@@ -188,7 +227,7 @@ Then,
   results and discuss your findings. 
   \end{task}
 
-  \includepdf[pages=-]{export.pdf}
+  % \includepdf[pages=-]{export.pdf}
   
 
 \end{document}
